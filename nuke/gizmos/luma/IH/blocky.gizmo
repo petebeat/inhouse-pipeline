@@ -1,0 +1,35 @@
+#! /Applications/Nuke8.0v5/Nuke8.0v5.app/Contents/MacOS/libnuke-8.0.v5.dylib -nx
+version 8.0 v5
+Gizmo {
+ addUserKnob {20 BlockyKernel}
+ addUserKnob {41 "Local GPU: " T BlinkScript2.gpuName}
+ addUserKnob {41 "Use GPU if Available" T BlinkScript2.useGPUIfAvailable}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 "Horizontal Blocks" T "BlinkScript2.BlockyKernel_Horizontal Blocks"}
+ addUserKnob {41 "Vertical Blocks" T "BlinkScript2.BlockyKernel_Vertical Blocks"}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 1377
+  ypos 306
+ }
+ BlinkScript {
+  ProgramGroup 1
+  KernelDescription "1 \"BlockyKernel\" iterate pixelWise 1fd2371954e8f7308ab417e2d2dc9b02f83162f229069ce4409b687a028c093f 2 \"src\" Read Random \"dst\" Write Point 2 \"Horizontal Blocks\" Int 1 KAAAAA== \"Vertical Blocks\" Int 1 FAAAAA=="
+  EncodedSource "1 1000 lPEuqDumYrXudvm/otHXDV14tYHS0wZq1+NbIQBXbQpMYLIqv75NHb7sWhtx9hJIlkV9WhAIIwtbS2EWbO1lL91/gl0sj9e2aoq3PnJ+xxSYFqeFuoEY+qLmYhc+JUGSYGF1rSWNiUsM5Crgk37StX92ga3GdnSEUDjiS/ULAlBHcVd8WP6YmdNe6iFolbuIugn27FNFe5hv8COst9uD3zQIWRtyuqHjYpfTK11aeKOKMhOTJ52E0BLEvEINzOGskGeXwIQesJEkQYwPhz1A46y7SERav2ZdxQCxEbRQh1HT43aysJc2xQMJOBSyeytb2ZMnHImn9EYEZ5LUQBYAU9jv1OTrhm7PpNyaSfxXJy4rIhxwl8fDACqwG+DGYmqD2Es+r9x0qMue3LMKAKhSIE7CJIPygechl1SLe+Ne7EKh0OMR4iMmLZHMpPh1sQb009u3EhxeCNEDBx4/U6E8TNMvi1IKxic7xO5qV16J8D94CWVsD7YZmyydDJfq21tZcV1BuDZxQ9ylryAWnMU4mRhmguV6djWdSrbT13xb1ut7HLzPO2c6Yx3xDhAOCR/kT3GL5Db+S2dxTsU6DornKll4wepHpkc6Ui+N/9m5HSrTcv1sluq8BOh7w2qYNbm3AEDAi+E3KWQxAC/xCJpyHSOHssMSFwsqTLwW+z/kqzKa3OfGkp2ATRL2NtDWxcZVhiluUspbuUowXYdGTG+co959iC40UlorXYIzprKpNE9AyTsgUEPqUYgVjJ88P6QOETqTNXszPHK+IqvUhi4c1Z+Ww9Dep1LHWSytjpgd/Jup2bfh3JcY9Uv7/63GmxZ5VWCu9t7jEvThvA3ingNIKwks4WFYV8jKcKhfavmYJd0z5IU9Kv8QNLI+p79fb4sDENw1q9h9ZFIBXhQ78HU2FwUanZIXA5hwj/sadr9VqTepiI6x7vBnrGbS/bstED+EdXFxdknETcDtHfTmSfRkdnGMmzvoADA7IsoRMInmkpsF2jBkHIcd1I1yEJWhtCV/heW6AE2tC8/u4fHnLIYlSRVEDLWQ3QqsUrkHeZEs70tcQvE+Va8qP6opikV7Zm83zZ2pMHqDkx/NBKZuPYiZUeY43bCDKXp8IuLRafzcwVRmeh7urm2kiqt6FriCOWGXMx/sM5x9YVJccSntbdwStcfpO0BFXuY4IERlBnff4eTf17RZVbUTK7OBozuZqDIiz7bpW0GxZq/Q4TT6qFJaahAXMhnlMM8sz8ze9pT909IAUro2IusxvLDi/n795ppWXJ4MZS1wt1NzcVxquPOEDaRzlTLQ3h1hI9xWtk4g0ni3m5gPugVNPAajMeSUfU/A"
+  rebuild ""
+  "BlockyKernel_Horizontal Blocks" 120
+  "BlockyKernel_Vertical Blocks" 120
+  protectKernelWhenPublishing true
+  maxTileLines 30
+  name BlinkScript2
+  xpos 1377
+  ypos 346
+ }
+ Output {
+  name Output1
+  xpos 1377
+  ypos 446
+ }
+end_group

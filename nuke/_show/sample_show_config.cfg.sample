@@ -1,0 +1,97 @@
+
+#default things can be referenced in any entry
+[DEFAULT]
+root_folder=/Volumes/Untitled/showname/_shots
+server=/Volumes/Untitled/showname
+
+#set up show global stuff
+[show]
+codename=TEST
+shots_folder=%(root_folder)s
+output_folder=%(server)s/_deliveries
+luts=%(server)s/_pipeline/nuke/_show/LutPackage/
+
+[raw_path]
+#the raw_path section is the most important. when the pipeline loads the
+#nuke script or looks at the name of a render to deliver, it will run it against the
+#regular expressions (see the re section). if it finds a match, it will take all of
+#the entries in this section and populate a set of environmental variables with
+#each path in this section resolving any {fields} that match named capture groups in the
+#regex.
+
+#in the case of the on nuke load/save it will save the values in variables named
+#IH_PATH_{name}. where {name} is the uppercased name of the config entries
+#in this section. (ie IH_PATH_SHOT would be populated with the evaluated path
+#for the config line "shot=%(root_folder)/{seq}/{shot}" )
+
+#The delivery system does the same thing with the name of the selected read node,
+#but it will populate the values into the IH_DELIVERY_{NAME} environmental vars.
+
+#most of these paths are optional. and you can add whatever ones you need.
+#some of them are hooked into by various scripts, and the easiest way to find them is just
+#search for the getenv['IH_PATH_{NAME}'] in the codebase.
+
+
+
+shot=%(root_folder)s/{seq}/{shot}
+
+shotname={shot}
+version={version}
+
+nuke=%(shot)s/nuke/{shot}_comp_{version}.nk
+cdl=%(shot)s/data/cdl/{shot}.cc
+
+#this is used by the open counts utility
+counts=%(shot)s/data/counts/
+
+#these paths make the copy to utilities work from inside the inhouse menu
+scans=%(shot)s/images/scans/
+elements=%(shot)s/images/elements/
+prerenders=%(shot)s/images/prerenders/
+shared_elements=%(root_folder)s/{seq}/_shared/elements/
+show_elements=%(root_folder)s/_elements/
+
+comp=%(shot)s/images/comps/{shot}_{type}_{version}/
+
+fullrez=%(shot)s/images/comps/{shot}_{type}_{version}/{shot}_{type}_{version}.####.exr
+qt=%(shot)s/images/comps/{shot}_{type}_{version}
+temp_qt=%(shot)s/images/comps/{shot}_{type}_{version}
+
+#use regex101.com to build a regex that captures all the variables you need from the .nk filename
+[re]
+basename=(?P<fullname>(?P<shot>(?P<seq>\w{3})_\d{4})_(?P<type>\w+)_(?P<version>[vV]\d+))
+fullrez=(?P<fullname>(?P<shot>(?P<seq>\w{3})_\d{4})_(?P<type>\w+)_(?P<version>[vV]\d+))
+shortname=(?P<fullname>(?P<shot>(?P<seq>\w{3})_\d{4})_?(?P<type>\w+)?_(?P<version>[vV]\d+)?)
+#shortname is used for quicklaunching scripts by name. it is the same as fullname but
+#makes most things optional so you can just type the shot name
+
+
+
+[delivery]
+#this is the location where your delivery gizmos live
+presets=%(server)s/_pipeline/nuke/_show/delivery
+
+#these are the headers for the csv file that gets generated when you publish a submission folder
+csv_headers=Vendor,Date Submitted,Batch ID,VFX Shot ID,Filename,Format,Submission Status,Submission Notes
+
+#default font path crap should be fine
+font=/Library/Fonts/Arial.ttf
+font_bold=/Library/Fonts/Arial Bold.ttf
+
+#this is the string that generates the folder names for the deliveries,
+# it uses python datetime format strings https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior
+# but every % needs to be escaped with a second % ala %%Y for %Y
+folder_string=IH_%%Y%%m%%d
+
+[email]
+
+distro_list_to=personB@email.com,personB@email.com
+distro_list_cc=
+#setup your smtp mail server here to automatically send publish emails.
+mail_from=
+mail_from_address=
+mail_username=
+mail_password=
+mail_smtp_server=smtp.gmail.com:587
+#if you want to use gmail you need to enable it in your gmail settings. I reccomend
+#setting up a dummy account just to send these emails

@@ -1,0 +1,249 @@
+#! /Applications/Nuke10.5v4/Nuke10.5v4.app/Contents/MacOS/libnuke-10.5.4.dylib -nx
+version 10.0 v1
+Gizmo {
+ addUserKnob {20 User}
+ addUserKnob {4 vieweroptions M {"Mae show lut (rec709)" "Mae show lut (no cdl)" "Mae show lut (rec709 avid reformat)" "" ""}}
+ addUserKnob {6 disable_cdl l "disable cdl" +STARTLINE}
+ addUserKnob {41 file T SHOT_CDL.file}
+ addUserKnob {41 cccid T SHOT_CDL.cccid}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0x8e388e00
+  label "Apply Shot CDL"
+  note_font_size 42
+  xpos 294
+  ypos 316
+  bdheight 110
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos 386
+  ypos 95
+ }
+ Dot {
+  name Dot1
+  xpos 420
+  ypos 171
+ }
+ Colorspace {
+  colorspace_out AlexaV3LogC
+  name Colorspace7
+  label "Lin to Log\n"
+  xpos 386
+  ypos 197
+ }
+set N12eb5ea0 [stack 0]
+ OCIOCDLTransform {
+  slope {1.489243984 1.484341979 1.502413034}
+  offset {-0.1055710018 -0.1103390008 -0.1140900031}
+  power {1.108206987 1.121330023 1.128231049}
+  saturation 0.8199999928
+  working_space linear
+  read_from_file true
+  file "\[getenv IH_PATH_CDL]"
+  version 2
+  name SHOT_CDL
+  xpos 303
+  ypos 388
+ }
+ OCIOFileTransform {
+  file "\[getenv IH_SHOW_LUTS]AlexaV3_K1S1_LogC2Video_Rec709_EE.cube"
+  version 6
+  working_space linear
+  name EFilm_IT_3DL_VFX_Rec709_4
+  label "converts to rec709"
+  xpos 303
+  ypos 497
+ }
+set N12eeb1b0 [stack 0]
+ Group {
+  name MAE_PLATE_FORMATTER_v1_
+  tile_color 0xcc00ffff
+  gl_color 0xffaeaeff
+  xpos 303
+  ypos 579
+  addUserKnob {20 User}
+  addUserKnob {41 filter T VFX_DELIVERY_FORMAT.filter}
+  addUserKnob {4 output M {"VFX EXR DELIVERY" "ACTIVE PICTURE CROP" "AVID HD"}}
+ }
+  Input {
+   inputs 0
+   name Input1
+  }
+  Dot {
+   name Dot3
+  }
+set N688a5cc0 [stack 0]
+  Dot {
+   name Dot2
+  }
+set N6889dc90 [stack 0]
+  Dot {
+   name Dot1
+  }
+  Reformat {
+   type "to box"
+   box_width 3236
+   box_height 1288
+   box_fixed true
+   resize none
+   black_outside true
+   name Reformat18
+   label 3424x2202
+  }
+push $N6889dc90
+  Reformat {
+   type "to box"
+   box_width 2714
+   box_height 2160
+   box_fixed true
+   box_pixel_aspect 2
+   resize none
+   black_outside true
+   name Reformat14
+   label 4096x2160
+  }
+push $N688a5cc0
+  Reformat {
+   type "to box"
+   box_width 3236
+   box_height 1288
+   box_fixed true
+   resize none
+   black_outside true
+   name Reformat12
+   label 3414x2198
+  }
+push $N688a5cc0
+  Dot {
+   name Dot46
+  }
+set N376cc8d0 [stack 0]
+  Reformat {
+   type "to box"
+   box_width 2036
+   box_height 1620
+   box_fixed true
+   box_pixel_aspect 2
+   resize none
+   black_outside true
+   name Reformat7
+   label 2880x1620
+  }
+push $N376cc8d0
+  Dot {
+   name Dot5
+  }
+set N376b5b40 [stack 0]
+  Reformat {
+   type "to box"
+   box_width 2880
+   box_height 1146
+   box_fixed true
+   resize none
+   black_outside true
+   pbb true
+   name Reformat4
+   label 2880x1620
+  }
+push $N376b5b40
+  Dot {
+   name Dot6
+  }
+  Reformat {
+   type "to box"
+   box_width 2714
+   box_height 2160
+   box_fixed true
+   box_pixel_aspect 2
+   resize none
+   name Reformat21
+   label 2880x2160
+  }
+  Switch {
+   inputs 6
+   which {{expression}}
+   name Switch1
+   addUserKnob {20 User}
+   addUserKnob {1 expression t "\[lsearch \[list 2880x2160:2 2880x1620:1 2880x1620:2 3414x2198:1 4096x2160:2 3424x2202:1] \[value Input1.width]x\[value Input1.height]:\[value Input1.pixel_aspect]]"}
+   expression "\[lsearch \[list 2880x2160:2 2880x1620:1 2880x1620:2 3414x2198:1 4096x2160:2 3424x2202:1] \[value Input1.width]x\[value Input1.height]:\[value Input1.pixel_aspect]]"
+  }
+  Reformat {
+   type "to box"
+   box_width 2165
+   box_height 1716
+   box_fixed true
+   box_pixel_aspect 2
+   filter Lanczos6
+   black_outside true
+   name VFX_DELIVERY_FORMAT
+   label "VFX ANA DELIVERY FORMAT"
+  }
+set N688c5b60 [stack 0]
+  Reformat {
+   type "to box"
+   box_width 2048
+   box_height 852
+   box_fixed true
+   resize height
+   name ACTIVE_PICTURE_CROP
+  }
+set N688d2a60 [stack 0]
+  Reformat {
+   format "1920 1080 0 0 1920 1080 1 HD_1080"
+   black_outside true
+   name AVID_HD
+  }
+  Dot {
+   name Dot7
+  }
+push $N688d2a60
+  Dot {
+   name Dot8
+  }
+push $N688c5b60
+  Switch {
+   inputs 3
+   which {{parent.output}}
+   name Switch2
+   selected true
+  }
+  Output {
+   name Output1
+  }
+ end_group
+ Reformat {
+  format "1920 1080 0 0 1920 1080 1 HD_1080"
+  black_outside true
+  name Reformat1
+  xpos 303
+  ypos 617
+ }
+set N12ef7dc0 [stack 0]
+push $N12eb5ea0
+ OCIOFileTransform {
+  file "\[getenv IH_SHOW_LUTS]AlexaV3_K1S1_LogC2Video_Rec709_EE.cube"
+  version 6
+  working_space linear
+  name EFilm_IT_3DL_VFX_Rec709_1
+  label "converts to rec709"
+  xpos 505
+  ypos 435
+ }
+push $N12eeb1b0
+ Switch {
+  inputs 3
+  which {{parent.vieweroptions}}
+  name Switch2
+  xpos 501
+  ypos 621
+ }
+ Output {
+  name Output2
+  xpos 501
+  ypos 711
+ }
+end_group

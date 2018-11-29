@@ -1,0 +1,30 @@
+#!/usr/bin/python
+
+##makecdl.py
+
+import sys
+import os
+cwd = os.getcwd()
+
+values = sys.argv[1].replace(")("," ").translate(None,"()").split(" ")
+
+output="<?xml version=\"1.0\" ?><ColorCorrection><SOPNode><Slope>%s %s %s</Slope><Offset>%s %s %s</Offset><Power>%s %s %s</Power></SOPNode><SatNode><Saturation>%s</Saturation></SatNode></ColorCorrection>" %(
+	values[0],
+	values[1],
+	values[2],
+	values[3],
+	values[4],
+	values[5],
+	values[6],
+	values[7],
+	values[8],
+	values[9]
+
+	)
+name = os.path.join(cwd,sys.argv[2]+".cdl")
+print name
+
+f = open(name, 'w')
+f.write(output)
+f.close()
+print output

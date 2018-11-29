@@ -1,0 +1,22 @@
+import os
+srcw=nuke.toNode('Template')
+
+def copy_knobs(nodea,nodeb):
+    k1 = nodea.knobs()
+    k2 = nodeb.knobs()
+    excludedKnobs=['name','xpos','ypos']
+    intersection = dict([(item, k1[item]) for item in k1.keys() if item not in excludedKnobs and k2.has_key(item)])
+    for k in intersection.keys():
+           x1 = nodea[k]
+           x2 = nodeb[k]
+           x2.fromScript(x1.toScript())
+
+for n in nuke.selectedNodes():
+    n['colorspace'].setValue('AlexaV3LogC')
+    w=nuke.nodes.Write()
+    copy_knobs(srcw,w)
+    w['file'].setValue(os.path.basename(n['file'].getValue()).split('.')[0]+'.mov')
+    w['first'].setValue(n['first'].getValue())
+    w['last'].setValue(n['last'].getValue())
+    w['use_limit'].setValue(True)
+    w.connectInput(0,n)
