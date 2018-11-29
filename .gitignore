@@ -6,6 +6,13 @@ __pycache__/
 # C extensions
 *.so
 
+#nuke gizmos
+gizmos/
+*.autosave
+_archive
+ToolSets/
+review/
+
 # Distribution / packaging
 .Python
 build/
